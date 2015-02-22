@@ -79,3 +79,36 @@ This file will contain my notes as I work through [Jumpstart Lab's Blogger 2 Tut
 
 ### A Bit on Parameters ###
 * Within the controller, we have access to a method named 'params'. Often, we will refer to it as the params hash, but technically params is a method that returns a hash. When we use a form, the params hash will contain the attributes as keys (strings or symbols) and the user's input as the values.
+
+## Writing a Form ##
+* Because we are using RESTful conventions, we can create a new form in which Rails will take care of many of the details. 
+* We must create a form using the 'form_for' helper method. 
+* In the create method, we use the params method to access the data submitted by the user through the form. 
+* We can then redirect the user to the article using the redirect_to helper method, remembering to use the _url syntax and not the _path. 
+* However, there is a correct way to access the data passed by the user.
+* First, we should just pass in the entire params[:article] hash to Article.create. However, this would allow a malicious user to potential compromise the integrity of our app. 
+* Rails gives us strong parameters to deal with the issue above. In a helper file ('app/helpers/articles_helper.rb') we define a new method that takes the params method and uses 'require' as well as 'permit' to require certain data in the submission, and to permit only certain data to be included in the database. The code would look like: 'params.require(:article).permit(:title, :body)
+* We would also have to use 'include ArticlesHelper' in our controller file, and change our create action to use '@article = Article.create(article_params)'.
+
+## Creating the Delete Action / View ##
+* If we look in the 'rake routes' output, we can see that the delete action is mapped to the DELETE http verb, and the /article URL. We can fake HTTP verbs in Rails by passing a method: VERB as an option to our link_to helper: 'link_to "Delete This Article', article_path(@article), method: delete'.
+* We can also add to our link_to another parameter: 'data: {confirm: "Message"}'; this will create a pop-up asking if the user really wants to delete the article. 
+
+## Creating the Edit Action / View ##
+* We create the edit action / view by adding the link to the show.html.erb file using link_to.
+* Then, I have to create the edit action in the controller. 
+* I must then add the edit view in 'app/views/article/'.
+* After this, it is important to notice that the form that is going to appear in the edit.html.erb is the same as the form in new.html.erb. So, keeping with the principal of DRY, we are going to extract this code into a partial, and then reference this partial in both new.html.erb and edit.html.erb. 
+
+### Creating a Partial ###
+* Partials help us keep true to the principal of DRY by giving us a standard way of putting code that is going to be re-used in a single, authoritative place. 
+* Partials live in the same place as our html - 'app/views/articles/', but their filenames have a **leading underscore**.
+* To "tell" Rails to include a partial in our new / edit views, we would use code like this: '<%= render partial: 'form' %>'. Even though our file starts with a leading underscore, Rails is aware of that convention and will look for '_form.html.erb' in the appropriate directory.
+
+### Flashes ###
+* Flashes are used to send a message to the user. 
+* flash.notice will fetch a value, while flash.notice = "My message" will store the string "My message" in the flash. 
+* We can add a flash message to our actions with the line: 'flash.notice = "Message"'.
+* Generally, the flash notice is put on the application's layout file so that we can easily insert flash notices on all our pages.
+* Controllers will typically set flash messages for update, create, and destroy.
+* You want to insert the flash notice BEFORE the redirect. This makes it so that only if the user goes through that action, the flash is properly set. 
