@@ -112,3 +112,11 @@ This file will contain my notes as I work through [Jumpstart Lab's Blogger 2 Tut
 * Generally, the flash notice is put on the application's layout file so that we can easily insert flash notices on all our pages.
 * Controllers will typically set flash messages for update, create, and destroy.
 * You want to insert the flash notice BEFORE the redirect. This makes it so that only if the user goes through that action, the flash is properly set. 
+
+## Adding Gems ##
+* Gems are added in the 'Gemfile' 
+* We have to run 'bundle install' whenever we change the 'Gemfile'
+* Whenever we change our database, we need to create a migration. I am going to change the database to add functionality with the paperclip gem. 
+
+## Importance of Layouts ##
+* A layout is a special view template that wraps other layout. Code that is commont to a bunch of views, for example, can be put in a layout, and then the views themselves can be called / inserted into the layout. That way, there is a single, definitive source of the layout. 
