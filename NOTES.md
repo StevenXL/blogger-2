@@ -120,3 +120,10 @@ This file will contain my notes as I work through [Jumpstart Lab's Blogger 2 Tut
 
 ## Importance of Layouts ##
 * A layout is a special view template that wraps other layout. Code that is commont to a bunch of views, for example, can be put in a layout, and then the views themselves can be called / inserted into the layout. That way, there is a single, definitive source of the layout. 
+
+## The Asset Pipeline ##
+* How does rails know to include stylesheets in our 'app/assets/stylesheets' directory? Our layouts folder has a file called 'application.html.erb'. This is a 'manifest' file. It tells Ruby how to combine files in different directories. If we open up this file, it includes a 'stylesheet_link_tag' with the first argument as 'application'. That is how Rails knows. 
+
+## Authentication ##
+* We are going to use the Sorcery gem for authentication purposes. 
+* First, we add the gem to our Gemfile. Then, we run bundle install so that bundle can install the gem and any dependencies properly
